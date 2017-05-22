@@ -8,56 +8,38 @@ function Object:new(o)
     return o
 end
 
-local Enemy = {}
-Enemy.__index = Enemy
+local Enemy = Object:new {
+    xpos = 0,
+    ypos = 0,
+    drawable = nil,
+    type = '',
+    health = 0,
+    disp = 0
+}
 
---Enemy object which all enemies extend from
-function Enemy:new(xpos, ypos, drawable, type, health, disp)
-    return setmetatable({
-        xpos = xpos,
-        ypos = ypos,
-        drawable = drawable,
-        type = type,
-        health = health,
-        disp = disp
-    }, self)
-end
+local Troll = Enemy:new {
+    drawable = love.graphics.newImage('troll.jpg'),
+    type = 'g',
+}
 
-local Troll = setmetatable({}, Enemy)
-Troll.__index = Troll
-
-function Troll:new(xpos, ypos, health, disp)
-    print(6678)
-    local enemy = Enemy:new(xpos, ypos, love.graphics.newImage('troll.jpg'), 'g', health, disp)
-    return enemy
-end
+local Tower = Object:new {
+    drawable = nil,
+    attack_type = '',
+    bullet = nil,
+    shoot_frequency = 0
+}
 
 
-local Tower = {}
-Tower.__index = Tower
+local BasicTower = Tower:new {
+    drawable = love.graphics.newImage('basictower.jpg'),
+    attack_type = 'r',
+    bullet = 'r',
+    shoot_frequency = 10
+}
 
-function Tower:new(xpos, ypos, drawable, attack_type, bullet, shoot_pattern)
-    return setmetatable({
-        xpos = xpos,
-        ypos = ypos,
-        drawable = drawable,
-        attack_type = attack_type,
-        bullet = bullet,
-        shoot_pattern = shoot_pattern
-    }, self)
-end
-
-local BasicTower = setmetatable({}, Tower)
-BasicTower.__index = BasicTower
-
-function BasicTower:new(xpos, ypos, image, attack_type, bullet, shoot_pattern)
-    local tower = Tower.new(self, xpos, ypos, 'basictower.jpg', 'bad', 'reg', 10)
-    return tower
-end
 
 function drawEnemies(enemies)
     for _, enemy in ipairs(enemies) do
-        print(555)
         love.graphics.draw(enemy.drawable, enemy.xpos, enemy.ypos)
     end
 end
@@ -70,20 +52,21 @@ Grid.__index = Grid
 function Grid:new(xdim, ydim)
     print(xdim, ydim)
 
-    grid = {}
+    grid1 = {}
     for i=1, xdim do
-        grid[i] = {}
+        grid1[i] = {}
         for j=1, ydim do
-            grid[i][j] = false
+            grid1[i][j] = 5
         end
     end
 
     return setmetatable({
         xdim = xdim,
         ydim = ydim,
-        grid = grid
+        grid = grid1
     }, self)
 end
+
 
 
 
